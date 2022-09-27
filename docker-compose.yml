@@ -1,0 +1,133 @@
+version: '3'
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  exchangeable:
+    driver: bridge
+
+services:
+  server:
+    build: ./server
+    restart: always
+    volumes:
+      - ./server:/server
+    networks:
+      - exchangeable
+    #depends_on:
+    #  - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  apiservice:
+    build: ./services/apiService
+    restart: always
+    volumes:
+     - ./services/apiService:/services/apiService
+    networks:
+      - exchangeable
+    depends_on:
+      - server
+    ports:
+      - "127.0.0.1:9090:9090"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  blockchain:
+    build: ./services/blockchain
+    restart: always
+    volumes:
+     - ./services/blockchain:/services/blockchain
+    networks:
+      - exchangeable
+    depends_on:
+      - server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  database:
+    build: ./services/database
+    restart: always
+    volumes:
+     - ./services/database:/services/database
+    networks:
+      - exchangeable
+    depends_on:
+      - server
+      #- db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  matchingengine:
+    build: ./services/matchingEngine
+    restart: always
+    volumes:
+     - ./services/matchingEngine:/services/matchingEngine
+    networks:
+      - exchangeable
+    depends_on:
+      - server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  websocketservice:
+    build: ./services/websocketService
+    restart: always
+    volumes:
+     - ./services/websocketService:/services/websocketService
+    networks:
+      - exchangeable
+    depends_on:
+      - server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Test12345!
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - exchangeable
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"
+
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    networks:
+      - exchangeable
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "40m"
+        cache-max-file: "3"

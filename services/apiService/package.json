@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "websocket": "^1.0.34",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "docker system prune -f && docker-compose build && docker-compose up -d",
+    "stop": "docker-compose down",
+    "deploy": "docker-compose down && docker system prune -f && docker-compose build && docker-compose up -d"
+  },
+  "license": "UNLICENSED"
+}

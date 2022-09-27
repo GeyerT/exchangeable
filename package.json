@@ -1,0 +1,31 @@
+{
+  "name": "exchangeable",
+  "version": "1.0.0",
+  "description": "Backend for the exchangeable product",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker system prune -f && docker-compose build && docker-compose up",
+    "stop": "docker-compose down",
+    "deploy": "docker-compose down && docker system prune -f && docker-compose build && docker-compose up -d",
+    "hidden": "docker system prune -f && docker-compose build && docker-compose up -d",
+    "rebuild": "docker system prune -f && docker-compose build --force-rm --no-cache --pull && docker-compose up",
+    "clean": "docker volume prune -f && docker volume rm aristaios_db-data"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasTEC/exchangeable.git"
+  },
+  "keywords": [
+    "blockchain",
+    "nft",
+    "swap",
+    "exchange",
+    "backend"
+  ],
+  "author": "Thomas Geyer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasTEC/exchangeable/issues"
+  },
+  "homepage": "https://github.com/ThomasTEC/exchangeable#readme"
+}
